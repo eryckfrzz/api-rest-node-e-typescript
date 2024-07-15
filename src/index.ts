@@ -1,5 +1,5 @@
-import { app } from "./server/app";
+import { server } from "./server/Server";
 
-app.listen(3333, () => {
-    console.log('seridor iniciado na porta 3333!')
+server.listen(process.env.PORT || 3333, () => {
+    console.log(`App rodando na porta ${process.env.PORT || 3333} !`)
 })
