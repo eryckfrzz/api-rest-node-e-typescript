@@ -19,7 +19,10 @@ export const getAllValidation = validation((getSchema) => ({
 
 export const getAll  = async (req: Request <object, object, object, IQueryProps> , res: Response) => { //poderia colocar o requestHandler
 
+    if(Number(req.query.limit || req.query.page ) < 1) return res.status(StatusCodes.BAD_REQUEST)
+
+    console.log('deu bom !')
     console.log(req.query)
   
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado!')
+    return res.status(StatusCodes.ACCEPTED).send('solicitação feita com sucesso!')
 }

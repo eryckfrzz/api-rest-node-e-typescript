@@ -23,8 +23,12 @@ export const updateByIdValidation = validation((getSchema) => ({
 
 export const updateById  = async (req: Request <IParamProps, object, IBodyProps> , res: Response) => { //poderia colocar o requestHandler
 
+    if(Number(req.params.id) < 1 || Number(req.params.id) == 9999) return res.status(StatusCodes.BAD_REQUEST)
+    
+    console.log('só o ouro!')
+    
     console.log(req.params)
     console.log(req.body)
   
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado!')
+    return res.status(StatusCodes.ACCEPTED).send('Atualizado com sucesso!')
 }

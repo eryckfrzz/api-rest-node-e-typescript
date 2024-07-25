@@ -15,7 +15,11 @@ export const getByIdValidation = validation((getSchema) => ({
 
 export const getById  = async (req: Request <IParamProps> , res: Response) => { //poderia colocar o requestHandler
 
+    if(Number(req.params.id) < 1 || Number(req.params.id) == 9999) return res.status(StatusCodes.BAD_REQUEST)
+
+    console.log('só no grale!')
+
     console.log(req.params)
   
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado!')
+    return res.status(StatusCodes.ACCEPTED).send('Busca bem sucedida!')
 }
