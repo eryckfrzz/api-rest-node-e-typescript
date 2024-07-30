@@ -7,19 +7,17 @@ interface IParamProps{
     id?: number
 }
 
-export const deleteByIdValidation = validation((getSchema) => ({
+export const getByIdValidation = validation((getSchema) => ({
     params: getSchema <IParamProps>(yup.object().shape({
         id: yup.number().integer().required().moreThan(0),
     }))
 }))
 
-export const deleteById  = async (req: Request <IParamProps> , res: Response) => { //poderia colocar o requestHandler
+export const getById  = async (req: Request <IParamProps> , res: Response) => { //poderia colocar o requestHandler
 
     if(Number(req.params.id) < 1 || Number(req.params.id) == 9999) return res.status(StatusCodes.BAD_REQUEST)
 
-    console.log('foi sal minha véa!')
-
     console.log(req.params)
   
-    return res.status(StatusCodes.ACCEPTED).send()
+    return res.status(StatusCodes.ACCEPTED).send('Busca bem sucedida!')
 }

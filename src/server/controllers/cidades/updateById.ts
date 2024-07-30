@@ -25,8 +25,6 @@ export const updateById  = async (req: Request <IParamProps, object, IBodyProps>
 
     if(Number(req.params.id) < 1 || Number(req.params.id) == 9999) return res.status(StatusCodes.BAD_REQUEST)
     
-    console.log('só o ouro!')
-    
     console.log(req.params)
     console.log(req.body)
   

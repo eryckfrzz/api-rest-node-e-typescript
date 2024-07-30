@@ -1,6 +1,6 @@
 import { Router }  from "express"
 
-import { CidadeControllers } from '../../controllers'
+import { CidadeControllers } from '../controllers'
 
 const router = Router()
 
