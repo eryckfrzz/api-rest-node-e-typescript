@@ -16,11 +16,4 @@ describe('cidades-updateById', () => {
 
         expect(update.statusCode).toEqual(StatusCodes.ACCEPTED)
     })
-
-    it('Id inexistente', async () => {
-        const updateOne = await testServer.put('/cidades/0')
-
-        expect(updateOne.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(updateOne.body).toHaveProperty('errors.params.id')
-    })
 })

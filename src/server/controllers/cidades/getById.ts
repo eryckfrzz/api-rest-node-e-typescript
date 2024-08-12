@@ -2,8 +2,9 @@ import { Request, Response} from "express"
 import * as yup from 'yup'
 import { validation } from "../../shared/middlewares"
 import { StatusCodes } from "http-status-codes"
+import { CidadesProviders } from "../../database/providers/cidades"
 
-interface IParamProps{
+interface IParamProps {
     id?: number
 }
 
@@ -15,9 +16,23 @@ export const getByIdValidation = validation((getSchema) => ({
 
 export const getById  = async (req: Request <IParamProps> , res: Response) => { //poderia colocar o requestHandler
 
-    if(Number(req.params.id) < 1 || Number(req.params.id) == 9999) return res.status(StatusCodes.BAD_REQUEST)
+    if(!req.params.id){
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                default: 'O parâmetro ID precisa ser informado!'
+            }
+        })
+    }
 
-    console.log(req.params)
-  
-    return res.status(StatusCodes.ACCEPTED).send('Busca bem sucedida!')
+    const cidade = await CidadesProviders.getById(Number(req.params.id))
+
+    if(cidade instanceof Error){
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors: {
+                default: cidade.message
+            }
+        })
+    }
+
+    return res.status(StatusCodes.OK).json(cidade)
 }

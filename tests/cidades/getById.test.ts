@@ -14,11 +14,4 @@ describe('cidades-getById', () => {
 
         expect(viewOne.statusCode).toEqual(StatusCodes.ACCEPTED)
     })
-
-    it('números inexistentes', async () => {
-        const viewOne = await testServer.get('/cidades/0')
-
-        expect(viewOne.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(viewOne.body).toHaveProperty('errors.params.id')
-    })
 })

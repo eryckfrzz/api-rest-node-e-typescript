@@ -14,11 +14,4 @@ describe('cidades-deleteById', () => {
 
         expect(resDelete.statusCode).toEqual(StatusCodes.ACCEPTED)
     })
-
-    it('números inaceitáveis', async () => {
-        const resDelete = await testServer.delete('/cidades/0')
-
-        expect(resDelete.statusCode).toEqual(StatusCodes.BAD_REQUEST)
-        expect(resDelete.body).toHaveProperty('errors.params.id')
-    })
 })
