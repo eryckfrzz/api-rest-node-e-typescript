@@ -16,13 +16,13 @@ export const getAllValidation = validation((getSchema) => ({
         page: yup.number().optional().moreThan(0),
         limit: yup.number().optional().moreThan(0),
         filter: yup.string().optional(),
-        id: yup.number().integer().optional().moreThan(0).default(0)
+        id: yup.number().integer().optional().moreThan(0)
     })),
 }))
 
 export const getAll  = async (req: Request <object, object, IQueryProps> , res: Response) => { //poderia colocar o requestHandler
 
-    const cidades = await CidadesProviders.getAll(Number(req.query.page), Number(req.query.limit), String(req.query.filter), Number(req.query.id))
+    const cidades = await CidadesProviders.getAll(Number(req.query.page) || 1, Number(req.query.limit) || 10, String(req.query.filter) || '', Number(req.query.id))
 
     const totalCounts = await CidadesProviders.count(String(req.query.filter))
 

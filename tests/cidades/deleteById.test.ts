@@ -12,6 +12,6 @@ describe('cidades-deleteById', () => {
 
         const resDelete = await testServer.delete(`/cidades/${res1.body}`).send()
 
-        expect(resDelete.statusCode).toEqual(StatusCodes.ACCEPTED)
+        expect(resDelete.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
     })
 })

@@ -24,7 +24,7 @@ export const getById  = async (req: Request <IParamProps> , res: Response) => { 
         })
     }
 
-    const cidade = await CidadesProviders.getById(Number(req.params.id))
+    const cidade = await CidadesProviders.getById(req.params.id)
 
     if(cidade instanceof Error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

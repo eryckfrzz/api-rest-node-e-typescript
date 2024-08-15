@@ -12,6 +12,6 @@ describe('cidades-getById', () => {
 
         const viewOne = await testServer.get(`/cidades/${res1.body}`).send()
 
-        expect(viewOne.statusCode).toEqual(StatusCodes.ACCEPTED)
+        expect(viewOne.statusCode).toEqual(StatusCodes.OK)
     })
 })

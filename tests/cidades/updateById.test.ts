@@ -14,6 +14,6 @@ describe('cidades-updateById', () => {
             nome: 'Pirambu'
         })
 
-        expect(update.statusCode).toEqual(StatusCodes.ACCEPTED)
+        expect(update.statusCode).toEqual(StatusCodes.NO_CONTENT)
     })
 })

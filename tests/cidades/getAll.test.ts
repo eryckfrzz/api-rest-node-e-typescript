@@ -13,6 +13,6 @@ describe('cidades-getAll', () => {
 
         const viewAll = await testServer.get('/cidades').send()
 
-        expect(viewAll.statusCode).toEqual(StatusCodes.ACCEPTED)
+        expect(viewAll.statusCode).toEqual(StatusCodes.OK)
     })
 })
