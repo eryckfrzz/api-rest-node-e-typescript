@@ -1,5 +1,5 @@
 import knex from "knex";
-import { ICidade } from "../../models";
+import { ICidade } from "../../models/Cidade";
 import { ETableNames } from "../../ETableNames";
 
 export const updateById = async (id: number, cidade: Omit<ICidade, 'id'>): Promise<void | Error> => {

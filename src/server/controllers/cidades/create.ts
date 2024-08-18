@@ -2,7 +2,7 @@ import { Request, Response} from "express"
 import * as yup from 'yup'
 import { validation } from "../../shared/middlewares"
 import { StatusCodes } from "http-status-codes"
-import { ICidade } from "../../database/models"
+import { ICidade } from "../../database/models/Cidade"
 import { CidadesProviders } from "../../database/providers/cidades"
 
 interface IBodyProps extends Omit <ICidade, 'id'> {}
