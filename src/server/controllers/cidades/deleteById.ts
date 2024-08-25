@@ -10,7 +10,7 @@ interface IParamProps{
 
 export const deleteByIdValidation = validation((getSchema) => ({
     params: getSchema <IParamProps>(yup.object().shape({
-        id: yup.number().integer().required().moreThan(0),
+        id: yup.number().integer().required().moreThan(0)
     }))
 }))
 

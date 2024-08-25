@@ -1,6 +1,7 @@
 import { Router }  from "express"
 
 import { CidadeControllers } from '../controllers'
+import { PessoaControllers } from "../controllers/pessoas"
 
 const router = Router()
 
@@ -13,5 +14,11 @@ router.post('/cidades', CidadeControllers.createValidation , CidadeControllers.c
 router.get('/cidades/:id', CidadeControllers.getByIdValidation , CidadeControllers.getById)
 router.put('/cidades/:id', CidadeControllers.updateByIdValidation , CidadeControllers.updateById)
 router.delete('/cidades/:id', CidadeControllers.deleteByIdValidation , CidadeControllers.deleteById)
+
+router.get('/pessoas', PessoaControllers.getAllValidation , PessoaControllers.getAll)
+router.post('/pessoas', PessoaControllers.createValidation , PessoaControllers.create)
+router.get('/pessoas/:id', PessoaControllers.getByIdValidation , PessoaControllers.getById)
+router.put('/pessoas/:id', PessoaControllers.updateByIdValidation , PessoaControllers.updateById)
+router.delete('/pessoas/:id', PessoaControllers.deeleteByIdValidation , PessoaControllers.deleteById)
 
 export { router }

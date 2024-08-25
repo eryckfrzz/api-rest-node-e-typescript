@@ -1,13 +1,13 @@
-import * as create from './create'
-import * as getAll from './getAll'
-import * as getById from './getById'
-import * as updateById from './updateById'
-import * as deleteById from './deleteById'
+import * as Create from './create'
+import * as GetAll from './getAll'
+import * as GetById from './getById'
+import * as UpdateById from './updateById'
+import * as DeleteById from './deleteById'
 
 export const CidadeControllers = {
-    ...create,
-    ...getAll,
-    ...getById,
-    ...updateById,
-    ...deleteById
+    ...Create,
+    ...GetAll,
+    ...GetById,
+    ...UpdateById,
+    ...DeleteById
 }

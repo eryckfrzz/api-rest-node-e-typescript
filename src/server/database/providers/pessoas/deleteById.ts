@@ -4,12 +4,11 @@ import { Knex } from "../../knex";
 export const deleteById = async (id: number): Promise <void | Error> => {
     
     try {
-        await Knex(ETableNames.pessoas)
+        const result = await Knex(ETableNames.pessoas)
         .where('id', '=', id)
         .del()
-        .then(() => {
-            console.log('registro de pessoa deletado com sucesso!')
-        })
+        
+        if(result > 0) return
 
         return new Error('Erro ao deletar o novo registro de pessoa!')
     } catch (error) {

@@ -2,34 +2,32 @@ import { Request, Response} from "express"
 import * as yup from 'yup'
 import { validation } from "../../shared/middlewares"
 import { StatusCodes } from "http-status-codes"
-import { CidadesProviders } from "../../database/providers/cidades"
+import { PessoasProviders } from "../../database/providers/pessoas"
 
-export interface IQueryProps{
+interface IQueryProps{
     page?: number,
     limit?: number,
     filter?: string,
-    id?: number
 }
 
 export const getAllValidation = validation((getSchema) => ({
-    query: getSchema <IQueryProps>(yup.object().shape({
+    query: getSchema <IQueryProps> (yup.object().shape({
         page: yup.number().optional().moreThan(0).default(1),
         limit: yup.number().optional().moreThan(0).default(10),
-        filter: yup.string().optional().default(''),
-        id: yup.number().integer().optional().moreThan(0)
-    })),
+        filter: yup.string().optional().default('')
+    }))
 }))
 
-export const getAll  = async (req: Request <object, object, IQueryProps> , res: Response) => { //poderia colocar o requestHandler
+export const getAll = async (req: Request <object, object, object, IQueryProps>, res: Response) => {
 
-    const cidades = await CidadesProviders.getAll(Number(req.query.page) || 1, Number(req.query.limit) || 10, String(req.query.filter) || '', Number(req.query.id))
+    const result = await PessoasProviders.getAll(Number(req.query.page) || 1, Number(req.query.limit) || 10, String(req.query.filter) || '')
 
-    const totalCounts = await CidadesProviders.count(String(req.query.filter))
+    const totalCounts = await PessoasProviders.count(String(req.query.filter))
 
-    if(cidades instanceof Error){
+    if(result instanceof Error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
-                default: cidades.message
+                default: result.message
             }
         })
     }else if(totalCounts instanceof Error){
@@ -43,6 +41,5 @@ export const getAll  = async (req: Request <object, object, IQueryProps> , res: 
     res.setHeader('access-control-expose-headers', 'x-total-count')
     res.setHeader('x-total-count', totalCounts)
 
-    return res.status(StatusCodes.OK).json(cidades)
-
+    return res.status(StatusCodes.OK).json(result)
 }

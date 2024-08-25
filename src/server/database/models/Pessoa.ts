@@ -1,5 +1,5 @@
 export interface IPessoa{
-    id:number
+    id?:number
     cidadeId: number
     nomeCompleto: string
     email: string
