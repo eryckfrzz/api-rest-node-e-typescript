@@ -2,7 +2,7 @@ import Express  from "express"
 
 import 'dotenv/config'
 
-import './shared/services/translations-yup'
+import './shared/services/TranslationYup'
 
 import { router } from "./routes" 
 

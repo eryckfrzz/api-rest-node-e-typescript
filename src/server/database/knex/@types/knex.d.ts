@@ -4,6 +4,6 @@ declare module 'knex/types/tables' {
     interface Tables{
         cidades: ICidade
         pessoas: IPessoa
-        // usuarios: IUsuario
+        usuarios: IUsuario
     }
 }

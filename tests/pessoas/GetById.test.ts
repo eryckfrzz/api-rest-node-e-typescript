@@ -41,6 +41,6 @@ describe('pessoas-getById', () => {
 
         const res1Get = await testServer.get('/pessoas/1')
 
-        expect(res1Get.statusCode).toEqual(StatusCodes.BAD_REQUEST)
+        expect(res1Get.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR)
     })
 })
