@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes"
 import { UsuariosProviders } from "../../database/providers/usuarios"
 import { IUsuario } from "../../database/models/Usuario"
 import { PasswordCrypto } from "../../shared/services/PasswordCrypto"
+import { JWTservice } from "../../shared/services"
 
 interface ISignInProps extends Omit <IUsuario, 'id' | 'nome'> {}
 
@@ -19,9 +20,9 @@ export const SignIn = async (req: Request <object, object, ISignInProps>, res: R
 
     const {email, senha} = req.body
 
-    const result = await UsuariosProviders.getByEmail(email)
+    const usuario = await UsuariosProviders.getByEmail(email)
 
-    if(result instanceof Error){
+    if(usuario instanceof Error){
         return res.status(StatusCodes.UNAUTHORIZED).json({
             errors: {
                 default: 'Email ou senha inválidos!'
@@ -29,7 +30,7 @@ export const SignIn = async (req: Request <object, object, ISignInProps>, res: R
         })
     }
 
-    const verify = await PasswordCrypto.verifyPassword(senha, result.senha)
+    const verify = await PasswordCrypto.verifyPassword(senha, usuario.senha)
 
     if(!verify){
         return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -38,8 +39,19 @@ export const SignIn = async (req: Request <object, object, ISignInProps>, res: R
             }
         })
     }else{
+
+        const accessToken = JWTservice.sign({uid: Number(usuario.id)})
+
+        if(accessToken === 'JWT_SECRET_NOT_FOUND'){
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                errors: {
+                    default: 'Erro ao gerar o token de acesso'
+                }
+            })
+        }
+
         return res.status(StatusCodes.OK).json({
-            accessToken: 'teste.teste.teste'
+            accessToken
         })
     }
     

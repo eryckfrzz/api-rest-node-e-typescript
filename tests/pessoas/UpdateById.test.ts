@@ -3,18 +3,38 @@ import { testServer } from '../jest.setup'
 
 describe('pessoas-updateById', () => {
 
-    let cidadeId: number | undefined = undefined
+    let authToken = ''
 
     beforeAll(async() => {
-        const cityBody = await testServer.post('/cidades').send({
-            nome: 'teste'
+
+        await testServer.post('/cadastrar').send({
+            nome: 'Ana',
+            email: 'ana@gmail.com',
+            senha: '123456'
         })
 
-        cidadeId = cityBody.body
+        const ISignInProps = await testServer.post('/entrar').send({
+            email: 'ana@gmail.com',
+            senha: '123456'
+        })
+
+        authToken = ISignInProps.body.accessToken
     })
 
+    let cidadeId: number | undefined = undefined
+
+    beforeAll(async () => {
+        const resCidade = await testServer.post('/cidades')
+        .set({Authorization: `Bearer ${authToken}`})
+        .send({nome: 'teste'})
+
+        cidadeId = resCidade.body
+
+    })
+
+
     it('atualizar registro', async () => {
-        const res1 = await testServer.post('/pessoas').send({
+        const res1 = await testServer.post('/pessoas').set({Authorization: `Bearer ${authToken}`}).send({
             cidadeId,
             nomeCompleto: 'Erickzin',
             email: 'Kaiioo@gmail.com'
@@ -22,7 +42,7 @@ describe('pessoas-updateById', () => {
 
         expect(res1.statusCode).toEqual(StatusCodes.CREATED)
 
-        const res1Get = await testServer.put(`/pessoas/${res1.body}`).send({
+        const res1Get = await testServer.put(`/pessoas/${res1.body}`).set({Authorization: `Bearer ${authToken}`}).send({
             cidadeId,
             nomeCompleto: 'Kaio Erick Pereira Queiroz',
             email: 'kaioeryck@gmail.com'
@@ -32,14 +52,14 @@ describe('pessoas-updateById', () => {
     })
 
     it('registro inexistente', async () => {
-        const res1 = await testServer.put('/pessoas/9999')
+        const res1 = await testServer.put('/pessoas/9999').set({Authorization: `Bearer ${authToken}`})
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST)
         expect(res1.body).toHaveProperty('errors')
     })
 
     it('sem registro cadastrado', async () => {
-        const res1 = await testServer.post('/pessoas').send()
+        const res1 = await testServer.post('/pessoas').set({Authorization: `Bearer ${authToken}`}).send()
 
         expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST)
 

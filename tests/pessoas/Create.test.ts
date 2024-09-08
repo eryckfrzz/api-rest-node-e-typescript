@@ -3,18 +3,37 @@ import {testServer} from '../jest.setup'
 
 describe('pessoas-create', () => {
 
-    let cidadeId: number | undefined = undefined
+    let authToken = ''
 
     beforeAll(async() => {
-        const cityBody = await testServer.post('/cidades').send({
-            nome: 'teste'
+
+        await testServer.post('/cadastrar').send({
+            nome: 'Pereira',
+            email: 'pereira@gmail.com',
+            senha: '123456'
         })
 
-        cidadeId = cityBody.body
+        const signInRes = await testServer.post('/entrar').send({
+            email: 'pereira@gmail.com',
+            senha: '123456'
+        })
+
+        authToken = signInRes.body.accessToken
+    })
+
+    let cidadeId: number | undefined = undefined
+
+    beforeAll(async () => {
+        const resCidade = await testServer.post('/cidades')
+        .set({Authorization: `Bearer ${authToken}`})
+        .send({nome: 'teste'})
+
+        cidadeId = resCidade.body
+
     })
 
     it('cria registro', async () => {
-        const res1 = await testServer.post('/pessoas').send({
+        const res1 = await testServer.post('/pessoas').set({Authorization: `Bearer ${authToken}`}).send({
             cidadeId,
             nomeCompleto: 'Erickzada',
             email: 'Kain@gmail.com'
@@ -26,7 +45,7 @@ describe('pessoas-create', () => {
 
     it('tenta criar registro com email duplicado', async () => {
 
-        const Email1 = await testServer.post('/pessoas').send({
+        const Email1 = await testServer.post('/pessoas').set({Authorization: `Bearer ${authToken}`}).send({
             cidadeId,
             nomeCompleto: 'kaio',
             email: 'kaio@gmail.com'
@@ -34,7 +53,7 @@ describe('pessoas-create', () => {
 
         expect(Email1.statusCode).toEqual(StatusCodes.CREATED)
 
-        const Email2 = await testServer.post('/pessoas').send({
+        const Email2 = await testServer.post('/pessoas').set({Authorization: `Bearer ${authToken}`}).send({
             cidadeId,
             nomeCompleto: 'kaioerick',
             email: 'kaio@gmail.com'
@@ -45,7 +64,7 @@ describe('pessoas-create', () => {
     })
 
     it('registro com nome muito curto', async () => {
-        const res1 = await testServer.post('/pessoas').send({
+        const res1 = await testServer.post('/pessoas').set({Authorization: `Bearer ${authToken}`}).send({
             cidadeId,
             nomeCompleto: 'ka',
             email: 'teste@gmail.com'
@@ -56,7 +75,7 @@ describe('pessoas-create', () => {
     })
 
     it('registro sem nome', async () => {
-        const res1 = await testServer.post('/pessoas').send({
+        const res1 = await testServer.post('/pessoas').set({Authorization: `Bearer ${authToken}`}).send({
             cidadeId,
             nomeCompleto: '',
             email: 'teste@gmail.com'
@@ -67,7 +86,7 @@ describe('pessoas-create', () => {
     })
 
     it('registro sem nenhum dado', async () => {
-        const res1 = await testServer.post('/cidades').send({})
+        const res1 = await testServer.post('/cidades').set({Authorization: `Bearer ${authToken}`}).send({})
 
         expect(res1.body).toHaveProperty('errors')
     })
